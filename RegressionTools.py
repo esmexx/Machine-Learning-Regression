@@ -12,14 +12,13 @@ def simple_linear_regression(data, input_feature, output_feature):
     return intercept, slope
 
 def multiple_linear_regression(data, input_features, output_feature):
-    Ht = data[input_features[0]]    
+    Ht = data[input_features[0]]
     for i in range(1, len(input_features)):
         Ht = np.vstack((Ht, data[input_features[i]]))
     y = data[output_feature]
-    HtH = Ht.dot(Ht.transpose())
-    rss = np.linalg.inv(HtH).dot(Ht).dot(y)
-    return rss
-    
+    HtH = Ht.dot(Ht.T)
+    return np.linalg.inv(HtH).dot(Ht).dot(y)
+
 def get_regression_predictions(input_data, intercept, slope):
     return slope * input_data + intercept
 
