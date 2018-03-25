@@ -12,12 +12,12 @@ def simple_linear_regression(data, input_feature, output_feature):
     return intercept, slope
 
 def multiple_linear_regression(data, input_features, output_feature):
-    Ht = data[input_features[0]]
+    y = np.array(data[output_feature])
+    N = len(data[input_features[0]])
+    H = data[input_features[0]].reshape(N,1)
     for i in range(1, len(input_features)):
-        Ht = np.vstack((Ht, data[input_features[i]]))
-    y = data[output_feature]
-    HtH = Ht.dot(Ht.T)
-    return np.linalg.inv(HtH).dot(Ht).dot(y)
+        H = np.hstack((H, data[input_features[i]].reshape(N,1)))    
+    return np.linalg.inv(H.T.dot(H)).dot(H.T).dot(y)
 
 def get_regression_predictions(input_data, intercept, slope):
     return slope * input_data + intercept
@@ -32,8 +32,9 @@ def get_residual_sum_of_squares(data, input_feature, output_feature, intercept, 
     return rss.sum()
 
 def get_residual_sum_of_squares_multiple_models(data, input_features, output_feature, coeffs):
-    Ht = data[input_features[0]]    
+    y = np.array(data[output_feature])
+    N = len(data[input_features[0]])
+    H = data[input_features[0]].reshape(N,1)
     for i in range(1, len(input_features)):
-        Ht = np.vstack((Ht, data[input_features[i]]))
-    y = data[output_feature]
-    return (y-coeffs.dot(Ht)).dot(y-coeffs.dot(Ht))
+        H = np.hstack((H, data[input_features[i]].reshape(N,1)))
+    return (y-H.dot(coeffs.T)).dot(y-H.dot(coeffs.T))
