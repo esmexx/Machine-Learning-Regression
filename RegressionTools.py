@@ -22,6 +22,12 @@ def multiple_linear_regression(data, input_features, output_feature):
 def get_regression_predictions(input_data, intercept, slope):
     return slope * input_data + intercept
 
+def get_multiple_regression_predictions(data, input_features, weights):
+    y = data[input_features[0]] * weights[0]
+    for i in range(1, len(input_features)):
+        y += data[input_features[i]] * weights[i]
+    return y
+
 def inverse_regression_predictions(output_data, intercept, slope):
     return (output_data - intercept) / slope
 
